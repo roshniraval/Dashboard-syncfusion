@@ -1,0 +1,14 @@
+{
+    "components": [
+        "dashboard-layout",
+        "calendar"
+    ],
+    "minified": "false",
+    "themes": [
+        "material"
+    ],
+    "version": "18.2.56-patch",
+    "name": "ej2",
+    "isMinified": false,
+    "injectables": {}
+}
