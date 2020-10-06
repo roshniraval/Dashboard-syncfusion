@@ -2,6 +2,7 @@ import './index.css';
 import * as React from 'react';
 import { SampleBase } from './sample-base';
 import { DashboardLayoutComponent, PanelDirective, PanelsDirective} from '@syncfusion/ej2-react-layouts';
+import { ButtonComponent } from '@syncfusion/ej2-react-buttons';
 import { AccumulationChartComponent, AccumulationSeriesCollectionDirective, AccumulationSeriesDirective, indexFinder, Inject, AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation, } from '@syncfusion/ej2-react-charts';
 import { ListViewComponent } from '@syncfusion/ej2-react-lists';
 
@@ -45,6 +46,11 @@ export default class App extends SampleBase {
             <div className="dashboardParent">
               <DashboardLayoutComponent id="analytic_dashboard"  cellSpacing={this.cellSpacing} columns={6}>
                 <div className='control-section'>
+                <div className="property-panel-content" style={{flex:'auto'}}>
+                  <input className="e-input" type="text" placeholder="Search" name='search' id='search' style={{marginLeft:'10px'}}/>
+                      <ButtonComponent title='Search' type='button' onClick={this.searchOnclick.bind(this)}>Search</ButtonComponent>
+                       <ButtonComponent title='Clear' type='button' onClick={this.clearOnClick.bind(this)}>Clear</ButtonComponent>
+                 </div>
                         <div id="link">
                        <a id="category" onClick={this.onClick.bind(this)} style={{ visibility: 'hidden', display: 'inline-block' }}>Sales by Category</a>
                         <p style={{ visibility: 'hidden', display: 'inline-block' }} id="symbol">&nbsp;&gt;&gt;&nbsp;</p>
@@ -55,8 +61,9 @@ export default class App extends SampleBase {
                     <AccumulationChartComponent id='pie-chart' ref={pie => this.pie = pie} title='Automobile Sales by Category' enableSmartLabels={false} legendSettings={{ visible: false }} tooltip={{ enable: false, format: "<b>${point.x}${point.y}%</b>" }} chartMouseClick={this.onChartMouseClick.bind(this)} textRender={this.onTextRender.bind(this)} load={this.load.bind(this)} loaded={this.onChartLoad.bind(this)}>
                     <Inject services={[AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation]}/>
                     <AccumulationSeriesCollectionDirective>
-                        <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' dataLabel={this.dataLabel} radius='70%' explode={false}>
-                        </AccumulationSeriesDirective>
+                      <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' 
+                      dataLabel={this.dataLabel} innerRadius='40%' radius='90%' explode={false}>
+                      </AccumulationSeriesDirective>
                     </AccumulationSeriesCollectionDirective>
               </AccumulationChartComponent>
                     
@@ -68,7 +75,8 @@ export default class App extends SampleBase {
                   <AccumulationChartComponent id='pie-chart' ref={pie => this.pie = pie} title='Automobile Sales by Category' enableSmartLabels={false} legendSettings={{ visible: false }} tooltip={{ enable: false, format: "<b>${point.x}${point.y}%</b>" }} chartMouseClick={this.onChartMouseClick.bind(this)} textRender={this.onTextRender.bind(this)} load={this.load.bind(this)} loaded={this.onChartLoad.bind(this)}>
                         <Inject services={[AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation]}/>
                         <AccumulationSeriesCollectionDirective>
-                            <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' dataLabel={this.dataLabel} radius='70%' explode={false}>
+                            <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' dataLabel={this.dataLabel} 
+                            innerRadius='40%' radius='90%' explode={false}>
                             </AccumulationSeriesDirective>
                         </AccumulationSeriesCollectionDirective>
                   </AccumulationChartComponent>
@@ -77,6 +85,14 @@ export default class App extends SampleBase {
               </DashboardLayoutComponent>
             </div>
          </div>);
+    }
+
+    searchOnclick(){
+
+    }
+
+    clearOnClick(){
+
     }
     listTemplate(data) {
       debugger;

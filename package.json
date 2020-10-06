@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@syncfusion/ej2-charts": "^18.2.58",
+    "@syncfusion/ej2-react-buttons": "^18.3.35",
     "@syncfusion/ej2-react-charts": "^18.3.35",
     "@syncfusion/ej2-react-layouts": "^18.2.58",
     "@syncfusion/ej2-react-lists": "^18.3.35",
