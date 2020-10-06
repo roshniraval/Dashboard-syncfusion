@@ -14,20 +14,20 @@ const SAMPLE_CSS = `
 export default class App extends SampleBase {
     constructor() {
         super(...arguments);
-        this.cellSpacing =[5,5]
+        this.cellSpacing = [5, 5]
         this.data = [
             { x: 'SUV', y: 25 }, { x: 'Car', y: 37 }, { x: 'Pickup', y: 15 }, { x: 'Minivan', y: 23 }
         ];
         this.suvs = [{ x: 'Toyota', y: 8 }, { x: 'Ford', y: 12 }, { x: 'GM', y: 17 }, { x: 'Renault', y: 6 }, { x: 'Fiat', y: 3 },
-            { x: 'Hyundai', y: 16 }, { x: 'Honda', y: 8 }, { x: 'Maruthi', y: 10 }, { x: 'BMW', y: 20 }];
+        { x: 'Hyundai', y: 16 }, { x: 'Honda', y: 8 }, { x: 'Maruthi', y: 10 }, { x: 'BMW', y: 20 }];
         this.cars = [{ x: 'Toyota', y: 7 }, { x: 'Chrysler', y: 12 }, { x: 'Nissan', y: 9 }, { x: 'Ford', y: 15 },
-            { x: 'Tata', y: 10 },
-            { x: 'Mahindra', y: 7 }, { x: 'Renault', y: 8 }, { x: 'Skoda', y: 5 }, { x: 'Volkswagen', y: 15 }, { x: 'Fiat', y: 3 }];
+        { x: 'Tata', y: 10 },
+        { x: 'Mahindra', y: 7 }, { x: 'Renault', y: 8 }, { x: 'Skoda', y: 5 }, { x: 'Volkswagen', y: 15 }, { x: 'Fiat', y: 3 }];
         this.pickups = [{ x: 'Nissan', y: 9 }, { x: 'Chrysler', y: 4 }, { x: 'Ford', y: 7 }, { x: 'Toyota', y: 20 },
-            { x: 'Suzuki', y: 13 }, { x: 'Lada', y: 12 }, { x: 'Bentley', y: 6 }, { x: 'Volvo', y: 10 }, { x: 'Audi', y: 19 }];
+        { x: 'Suzuki', y: 13 }, { x: 'Lada', y: 12 }, { x: 'Bentley', y: 6 }, { x: 'Volvo', y: 10 }, { x: 'Audi', y: 19 }];
         this.minivans = [{ x: 'Hummer', y: 11 }, { x: 'Ford', y: 5 }, { x: 'GM', y: 12 }, { x: 'Chrysler', y: 3 },
-            { x: 'Jaguar', y: 9 },
-            { x: 'Fiat', y: 8 }, { x: 'Honda', y: 15 }, { x: 'Hyundai', y: 4 }, { x: 'Scion', y: 11 }, { x: 'Toyota', y: 17 }];
+        { x: 'Jaguar', y: 9 },
+        { x: 'Fiat', y: 8 }, { x: 'Honda', y: 15 }, { x: 'Hyundai', y: 4 }, { x: 'Scion', y: 11 }, { x: 'Toyota', y: 17 }];
         this.dataLabel = {
             visible: true, position: 'Inside', connectorStyle: { type: 'Curve', length: '5%' }, font: { size: '14px', color: 'white' }
         };
@@ -38,53 +38,45 @@ export default class App extends SampleBase {
         this.isparent = true;
         this.fields = { text: "x", id: "y" };
     }
+
+    dashboardItem() {
+        return (
+            <div className='control-section'>
+                <div className="property-panel-content" style={{flex:'auto'}}>
+                    <input className="e-input" type="text" placeholder="Search" name='search' id='search' style={{marginLeft:'10px'}}/>
+                    <ButtonComponent title='Search' type='button' onClick={this.searchOnclick.bind(this)}>Search</ButtonComponent>
+                    <ButtonComponent title='Clear' type='button' onClick={this.clearOnClick.bind(this)}>Clear</ButtonComponent>
+                </div>
+                <div id="link">
+                    <a id="category" onClick={this.onClick.bind(this)} style={{ visibility: 'hidden', display: 'inline-block' }}>Sales by Category</a>
+                    <p style={{ visibility: 'hidden', display: 'inline-block' }} id="symbol">&nbsp;&gt;&gt;&nbsp;</p>
+                    <p id="text" style={{ display: 'inline-block' }}></p>
+                </div>
+                <AccumulationChartComponent id='pie-chart' ref={pie => this.pie = pie} title='Automobile Sales by Category' enableSmartLabels={false} legendSettings={{ visible: false }} tooltip={{ enable: false, format: "<b>${point.x}${point.y}%</b>" }} chartMouseClick={this.onChartMouseClick.bind(this)} textRender={this.onTextRender.bind(this)} load={this.load.bind(this)} loaded={this.onChartLoad.bind(this)}>
+                    <Inject services={[AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation]} />
+                    <AccumulationSeriesCollectionDirective>
+                        <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' dataLabel={this.dataLabel} innerRadius='40%' radius='90%' explode={false}>
+                        </AccumulationSeriesDirective>
+                    </AccumulationSeriesCollectionDirective>
+                </AccumulationChartComponent><ListViewComponent id='list' width='350px' ref={list => this.list = list} dataSource={this.data} template={this.listTemplate} fields={this.fields}></ListViewComponent>
+        </div>
+        );
+    }
+
     render() {
         return (<div className='control-pane'>
-                <style>
-                    {SAMPLE_CSS}
-                </style>
+            <style>
+                {SAMPLE_CSS}
+            </style>
             <div className="dashboardParent">
-              <DashboardLayoutComponent id="analytic_dashboard"  cellSpacing={this.cellSpacing} columns={6}>
-                <div className='control-section'>
-                <div className="property-panel-content" style={{flex:'auto'}}>
-                  <input className="e-input" type="text" placeholder="Search" name='search' id='search' style={{marginLeft:'10px'}}/>
-                      <ButtonComponent title='Search' type='button' onClick={this.searchOnclick.bind(this)}>Search</ButtonComponent>
-                       <ButtonComponent title='Clear' type='button' onClick={this.clearOnClick.bind(this)}>Clear</ButtonComponent>
-                 </div>
-                        <div id="link">
-                       <a id="category" onClick={this.onClick.bind(this)} style={{ visibility: 'hidden', display: 'inline-block' }}>Sales by Category</a>
-                        <p style={{ visibility: 'hidden', display: 'inline-block' }} id="symbol">&nbsp;&gt;&gt;&nbsp;</p>
-                        <p id="text" style={{ display: 'inline-block' }}></p>
-                    </div>
+                <DashboardLayoutComponent id="analytic_dashboard" cellSpacing={this.cellSpacing} columns={6}>
                     <PanelsDirective>
-                    <PanelDirective sizeX={2} sizeY={2} row={1} col={0} content={
-                    <AccumulationChartComponent id='pie-chart' ref={pie => this.pie = pie} title='Automobile Sales by Category' enableSmartLabels={false} legendSettings={{ visible: false }} tooltip={{ enable: false, format: "<b>${point.x}${point.y}%</b>" }} chartMouseClick={this.onChartMouseClick.bind(this)} textRender={this.onTextRender.bind(this)} load={this.load.bind(this)} loaded={this.onChartLoad.bind(this)}>
-                    <Inject services={[AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation]}/>
-                    <AccumulationSeriesCollectionDirective>
-                      <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' 
-                      dataLabel={this.dataLabel} innerRadius='40%' radius='90%' explode={false}>
-                      </AccumulationSeriesDirective>
-                    </AccumulationSeriesCollectionDirective>
-              </AccumulationChartComponent>
-                    
-                    }>
-
-                    <ListViewComponent id='list' width='350px' ref={list => this.list = list} dataSource={this.data} template={this.listTemplate} fields={this.fields}></ListViewComponent>
-                    </PanelDirective>
+                        <PanelDirective sizeX={2} sizeY={2} row={0} col={0} content={this.dashboardItem.bind(this)}>
+                        </PanelDirective>
                     </PanelsDirective>
-                  <AccumulationChartComponent id='pie-chart' ref={pie => this.pie = pie} title='Automobile Sales by Category' enableSmartLabels={false} legendSettings={{ visible: false }} tooltip={{ enable: false, format: "<b>${point.x}${point.y}%</b>" }} chartMouseClick={this.onChartMouseClick.bind(this)} textRender={this.onTextRender.bind(this)} load={this.load.bind(this)} loaded={this.onChartLoad.bind(this)}>
-                        <Inject services={[AccumulationDataLabel, AccumulationTooltip, PieSeries, AccumulationAnnotation]}/>
-                        <AccumulationSeriesCollectionDirective>
-                            <AccumulationSeriesDirective dataSource={this.data} xName='x' yName='y' dataLabel={this.dataLabel} 
-                            innerRadius='40%' radius='90%' explode={false}>
-                            </AccumulationSeriesDirective>
-                        </AccumulationSeriesCollectionDirective>
-                  </AccumulationChartComponent>
-                    <ListViewComponent id='list' width='350px' ref={list => this.list = list} dataSource={this.data} template={this.listTemplate} fields={this.fields}></ListViewComponent>
-                </div>
-              </DashboardLayoutComponent>
+                </DashboardLayoutComponent>
             </div>
-         </div>);
+        </div>);
     }
 
     searchOnclick(){
@@ -95,11 +87,10 @@ export default class App extends SampleBase {
 
     }
     listTemplate(data) {
-      debugger;
         return (<div className='e-list-wrapper'>
-                <span className="e-list-item-product">{data.x}</span>
-                <span className="e-list-value">{data.y}%</span>
-            </div>);
+            <span className="e-list-item-product">{data.x}</span>
+            <span className="e-list-value">{data.y}%</span>
+        </div>);
     }
     onTextRender(args) {
         args.text = args.point.x + ' ' + args.point.y + ' %';
@@ -162,7 +153,7 @@ export default class App extends SampleBase {
         document.getElementById('list').style.display = 'none';
     }
     load(args) {
-       
+
     }
     onChartLoad(args) {
         document.getElementById('pie-chart').setAttribute('title', '');
